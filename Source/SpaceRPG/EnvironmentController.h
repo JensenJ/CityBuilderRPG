@@ -6,25 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "EnvironmentController.generated.h"
 
-UENUM(BlueprintType)
-enum class ESeasonEnum : uint8 {
-	ENone		UMETA(DisplayName = "None"),
-	ESpring		UMETA(DisplayName = "Spring"),
-	ESummer		UMETA(DisplayName = "Summer"),
-	EAutumn		UMETA(DisplayName = "Autumn"),
-	EWinter		UMETA(DisplayName = "Winter")
-};
-
-UENUM(BlueprintType)
-enum class EWeatherEnum : uint8 {
-	ENone		UMETA(DisplayName = "None"),
-	ESunny		UMETA(DisplayName = "Sunny"),
-	EOvercast	UMETA(DisplayName = "Overcast"),
-	ERain		UMETA(DisplayName = "Rain"),
-	ESnow		UMETA(DisplayName = "Snow"),
-	EThunder	UMETA(DisplayName = "Thunder"),
-};
-
 UCLASS()
 class SPACERPG_API AEnvironmentController : public AActor
 {
@@ -40,61 +21,33 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Calendar")
 	TArray<int32> gameDate;
 
-	//Update function for environment
+	//Update function for environment, runs every frame to update the directional light and the skysphere
 	UFUNCTION(BlueprintImplementableEvent, Category = "Calendar")
 	void UpdateEnvironment();
 
-	//Currently active season
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	ESeasonEnum seasonEnum;
-
-	//Currently active weather
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	EWeatherEnum weatherEnum;
-
-	//Temperature variable for calculations
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	float tempFloat;
-
 	//Celestial / skysphere variables
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
+	//Sun Angle
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Environment")
 	FRotator sunAngle;
 
+	//Sun height, used for calculating intensity, set within blueprint UpdateEnvironment function
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
+	float sunHeight;
+
+	//Value for the sun intensity, needs to be assigned to the directional light
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Environment")
 	float sunIntensity;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	float cloudSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	float cloudOpacity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	float starOpacity; 
-
+	//Set in editor to offset the sun's rotation
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
 	float sunRotationOffset;
-
-	//Skybox Colours for different weathers
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skybox")
-	FLinearColor zenithColor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skybox")
-	FLinearColor horizonColor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skybox")
-	FLinearColor cloudColor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skybox")
-	FLinearColor overallColor;
 
 	//Multipliers.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Calendar")
 	float gameSpeedMultiplier = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
-	float tempMultiplier = 1.0f;
-
+	float sunIntensityMultiplier = 1.0f;
 
 protected:
 	// Called when the game starts or when spawned
@@ -108,6 +61,7 @@ private:
 	void Clock();
 	void Calendar();
 
+
 	//Clock variables
 	float timeUnit = 0.25f;
 	float clockwork;
@@ -120,34 +74,14 @@ private:
 	int32 year = 1;
 
 	//Environment functions
+	//Function for every tick to update environment related stuff
 	void EnvironmentTick();
-	ESeasonEnum CalculateSeason(int32 month);
+	//Get the sun's rotation based on time
 	FRotator SetDayNight();
-	float CalculateTemperature();
+	//Function to calculate the sun intensity based on the sun's height in the skysphere
 	float CalculateSunIntensity();
-	float CalculateCloudOpacity();
-	float CalculateStarOpacity();
-	EWeatherEnum CalculateWeather();
-	void CalculateSkyboxColour();
-
-	//Temperature values
-	TArray<float> gameTemp;
-	float generatedTemp = 5.0f;
-	float lastTemp;
-	float minGenTemp;
-	float maxGenTemp;
-	float averageTemp;
-	bool bHasGeneratedTemp = false;
-	bool bNewGenerationTemp = true;
 
 	//DayNight
 	float dayNightHours = 0;
 
-	//Weather values
-	TArray<EWeatherEnum> lastWeather;
-	EWeatherEnum weather;
-	int32 weatherInt;
-	int32 counter = 0;
-	bool bHasGeneratedWeather = false;
-	bool bNewGenerationWeather = true;
 };
