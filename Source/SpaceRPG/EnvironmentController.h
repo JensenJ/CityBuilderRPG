@@ -72,6 +72,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
 	float starOpacity; 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Environment")
+	float sunRotationOffset;
+
 	//Skybox Colours for different weathers
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skybox")
 	FLinearColor zenithColor;

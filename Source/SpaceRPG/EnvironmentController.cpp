@@ -178,7 +178,7 @@ ESeasonEnum AEnvironmentController::CalculateSeason(int32 m_month) {
 //Calculates SunAngle and returns to environment tick
 FRotator AEnvironmentController::SetDayNight() {
 	float m_sunAngle = ((dayNightHours / 6) * 90) + 90;
-	FRotator sunRot = UKismetMathLibrary::MakeRotator(0, m_sunAngle, 90);
+	FRotator sunRot = UKismetMathLibrary::MakeRotator(180, m_sunAngle, 180 + sunRotationOffset);
 
 	return sunRot;
 }
