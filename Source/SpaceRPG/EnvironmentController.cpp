@@ -1,6 +1,5 @@
 // Copyright SpaceRPG 2020
 
-
 #include "EnvironmentController.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -10,13 +9,21 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Math/Color.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AEnvironmentController::AEnvironmentController()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	SetReplicates(true);
+}
 
+void AEnvironmentController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AEnvironmentController, net_clockwork);
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +48,9 @@ void AEnvironmentController::BeginPlay()
 	gameDate.Insert(day, 0);
 	gameDate.Insert(month, 1);
 	gameDate.Insert(year, 2);
+
+	lastHour = hours;
+	OnHourChanged();
 }
 
 // Called every frame
@@ -99,16 +109,26 @@ void AEnvironmentController::Clock() {
 	UKismetMathLibrary::FFloor(dayNightHours);
 	hours = dayNightHours;
 
+	//If the hour value has changed
+	if (lastHour != hours) {
+
+		//If running on the server
+		if (HasAuthority()) {
+			OnHourChanged();
+		}
+		lastHour = hours;
+	}
+
 	//Sets game time variables into array
 	gameTime.Insert(seconds, 0);
 	gameTime.Insert(minutes, 1);
 	gameTime.Insert(hours, 2);
 
 	//Logs time and whether day or night
-	FString strHours = FString::FromInt(gameTime[2]);
-	FString HoursMinutesString = UKismetStringLibrary::BuildString_Int(strHours, ":", gameTime[1], "");
-	FString FinalString = UKismetStringLibrary::BuildString_Int(HoursMinutesString, ":", gameTime[0], "");
-	UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Time: %s"), *FinalString);
+	//FString strHours = FString::FromInt(gameTime[2]);
+	//FString HoursMinutesString = UKismetStringLibrary::BuildString_Int(strHours, ":", gameTime[1], "");
+	//FString FinalString = UKismetStringLibrary::BuildString_Int(HoursMinutesString, ":", gameTime[0], "");
+	//UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Time: %s"), *FinalString);
 	//UE_LOG(LogTemp, Warning, TEXT("Night: %s"), (bIsNight ? TEXT("True") : TEXT("False")));
 }
 
@@ -131,10 +151,23 @@ void AEnvironmentController::Calendar() {
 	gameDate.Insert(year, 2);
 
 	//Logs date
-	FString strDays = FString::FromInt(gameDate[0]);
-	FString DaysMonthString = UKismetStringLibrary::BuildString_Int(strDays, "/", gameDate[1], "");
-	FString FinalString = UKismetStringLibrary::BuildString_Int(DaysMonthString, "/", gameDate[2], "");
-	UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Date: %s"), *FinalString);
+	//FString strDays = FString::FromInt(gameDate[0]);
+	//FString DaysMonthString = UKismetStringLibrary::BuildString_Int(strDays, "/", gameDate[1], "");
+	//FString FinalString = UKismetStringLibrary::BuildString_Int(DaysMonthString, "/", gameDate[2], "");
+	//UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Date: %s"), *FinalString);
+}
+
+void AEnvironmentController::OnHourChanged()
+{
+	//Sync clockwork incase the clockwork has de-synced
+	net_clockwork = clockwork;
+	UE_LOG(LogTemp, Warning, TEXT("Hour Passed"))
+}
+
+void AEnvironmentController::OnRep_Clockwork() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Syncing clockwork to: %f"), net_clockwork)
+	clockwork = net_clockwork;
 }
 
 //Calculates SunAngle and returns to environment tick

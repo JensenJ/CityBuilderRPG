@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	AEnvironmentController();
 
+	UPROPERTY(ReplicatedUsing=OnRep_Clockwork)
+	float net_clockwork;
+
+	UFUNCTION()
+	void OnRep_Clockwork();
+	
 	//Arrays for time data and date data
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Calendar")
 	TArray<int32> gameTime;
@@ -55,12 +61,14 @@ protected:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 private:	
 	//Clock functions
 	void SetClockwork(float deltaSeconds);
 	void Clock();
 	void Calendar();
-
+	void OnHourChanged();
 
 	//Clock variables
 	float timeUnit = 0.25f;
@@ -72,6 +80,8 @@ private:
 	int32 day = 1;
 	int32 month = 1;
 	int32 year = 1;
+
+	int32 lastHour;
 
 	//Environment functions
 	//Function for every tick to update environment related stuff
