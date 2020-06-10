@@ -1,6 +1,6 @@
 // Copyright SpaceRPG 2020
 
-#include "EnvironmentController.h"
+#include "TimeController.h"
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -12,22 +12,23 @@
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
-AEnvironmentController::AEnvironmentController()
+ATimeController::ATimeController()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SetReplicates(true);
 }
 
-void AEnvironmentController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void ATimeController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AEnvironmentController, net_clockwork);
+	DOREPLIFETIME(ATimeController, net_clockwork);
+	DOREPLIFETIME(ATimeController, net_GameDate);
 }
 
 // Called when the game starts or when spawned
-void AEnvironmentController::BeginPlay()
+void ATimeController::BeginPlay()
 {	
 	Super::BeginPlay();
 
@@ -51,10 +52,13 @@ void AEnvironmentController::BeginPlay()
 
 	lastHour = hours;
 	OnHourChanged();
+
+	lastDay = day;
+	OnDayChanged();
 }
 
 // Called every frame
-void AEnvironmentController::Tick(float DeltaTime)
+void ATimeController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -62,23 +66,23 @@ void AEnvironmentController::Tick(float DeltaTime)
 	SetClockwork(DeltaTime);
 	Clock();
 	Calendar();
-	EnvironmentTick(); //Updates all environment based stuff
+	TimeTick(); //Updates all Time based stuff
 
 	//Clamp arrays to 3 in size otherwise array grows rapidly
 	gameTime.SetNum(3);
 	gameDate.SetNum(3);
 }
 
-//Ticks through and updates functions related to environment
-void AEnvironmentController::EnvironmentTick() {
+//Ticks through and updates functions related to Time
+void ATimeController::TimeTick() {
 	sunAngle = SetDayNight(); //Calculate sun angle
 	sunIntensity = CalculateSunIntensity();
 
-	UpdateEnvironment(); //Blueprint Function called
+	UpdateTime(); //Blueprint Function called
 }
 
 //Sets clockwork for working out game speed.
-void AEnvironmentController::SetClockwork(float DeltaSeconds) {
+void ATimeController::SetClockwork(float DeltaSeconds) {
 	//Works out game speed
 	float DeltaTimeUnit = (DeltaSeconds / timeUnit * 0.24) * gameSpeedMultiplier;
 	float AddedClockwork = DeltaTimeUnit + clockwork;
@@ -89,7 +93,7 @@ void AEnvironmentController::SetClockwork(float DeltaSeconds) {
 }
 
 //Calculates time
-void AEnvironmentController::Clock() {
+void ATimeController::Clock() {
 	// Seconds
 	float clockworkSeconds = clockwork * 3600;
 	float newSeconds = clockworkSeconds / 60;
@@ -109,6 +113,12 @@ void AEnvironmentController::Clock() {
 	UKismetMathLibrary::FFloor(dayNightHours);
 	hours = dayNightHours;
 
+
+	//Sets game time variables into array
+	gameTime.Insert(seconds, 0);
+	gameTime.Insert(minutes, 1);
+	gameTime.Insert(hours, 2);
+
 	//If the hour value has changed
 	if (lastHour != hours) {
 
@@ -119,21 +129,16 @@ void AEnvironmentController::Clock() {
 		lastHour = hours;
 	}
 
-	//Sets game time variables into array
-	gameTime.Insert(seconds, 0);
-	gameTime.Insert(minutes, 1);
-	gameTime.Insert(hours, 2);
-
 	//Logs time and whether day or night
 	//FString strHours = FString::FromInt(gameTime[2]);
 	//FString HoursMinutesString = UKismetStringLibrary::BuildString_Int(strHours, ":", gameTime[1], "");
 	//FString FinalString = UKismetStringLibrary::BuildString_Int(HoursMinutesString, ":", gameTime[0], "");
-	//UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Time: %s"), *FinalString);
+	//UE_LOG(LogTemp, Warning, TEXT("TimeController: Time: %s"), *FinalString);
 	//UE_LOG(LogTemp, Warning, TEXT("Night: %s"), (bIsNight ? TEXT("True") : TEXT("False")));
 }
 
 //Calculates date
-void AEnvironmentController::Calendar() {
+void ATimeController::Calendar() {
 	day = dayTick + day;
 	int32 DaysInMonth = UKismetMathLibrary::DaysInMonth(year, month);
 	if (day > DaysInMonth) {
@@ -145,33 +150,64 @@ void AEnvironmentController::Calendar() {
 		year++;
 	}
 
+
 	//Sets Game Date variables into array
 	gameDate.Insert(day, 0);
 	gameDate.Insert(month, 1);
 	gameDate.Insert(year, 2);
 
+	//If the day value has changed
+	if (lastDay != day) 
+	{
+		//If running on server
+		if (HasAuthority())
+		{
+			OnDayChanged();
+		}
+		lastDay = day;
+	}
+
 	//Logs date
 	//FString strDays = FString::FromInt(gameDate[0]);
 	//FString DaysMonthString = UKismetStringLibrary::BuildString_Int(strDays, "/", gameDate[1], "");
 	//FString FinalString = UKismetStringLibrary::BuildString_Int(DaysMonthString, "/", gameDate[2], "");
-	//UE_LOG(LogTemp, Warning, TEXT("EnvironmentController: Date: %s"), *FinalString);
+	//UE_LOG(LogTemp, Warning, TEXT("TimeController: Date: %s"), *FinalString);
 }
 
-void AEnvironmentController::OnHourChanged()
+void ATimeController::OnHourChanged()
 {
 	//Sync clockwork incase the clockwork has de-synced
 	net_clockwork = clockwork;
 	UE_LOG(LogTemp, Warning, TEXT("Hour Passed"))
+
+	//Call blueprint function
+	UpdateHour();
 }
 
-void AEnvironmentController::OnRep_Clockwork() 
+void ATimeController::OnDayChanged() 
+{
+	//Sync calendar incase of de-sync
+	net_GameDate = gameDate;
+	UE_LOG(LogTemp, Warning, TEXT("Day Passed"))
+
+	//Call blueprint function
+	UpdateDay();
+}
+
+void ATimeController::OnRep_Clockwork() 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Syncing clockwork to: %f"), net_clockwork)
 	clockwork = net_clockwork;
 }
 
-//Calculates SunAngle and returns to environment tick
-FRotator AEnvironmentController::SetDayNight() {
+void ATimeController::OnRep_Calendar()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Syncing date to: %d / %d / %d"), net_GameDate[0], net_GameDate[1], net_GameDate[2])
+	gameDate = net_GameDate;
+}
+
+//Calculates SunAngle and returns to Time tick
+FRotator ATimeController::SetDayNight() {
 	float m_sunAngle = ((dayNightHours / 6) * 90) + 90;
 	FRotator sunRot = UKismetMathLibrary::MakeRotator(180, m_sunAngle, 180 + sunRotationOffset);
 
@@ -179,7 +215,7 @@ FRotator AEnvironmentController::SetDayNight() {
 }
 
 //Calculates the sun intensity based on the height of the sun in the world
-float AEnvironmentController::CalculateSunIntensity() {
+float ATimeController::CalculateSunIntensity() {
 	float newIntensity = sunHeight * sunIntensityMultiplier;
 
 	//Clamps value to make sure negative is not used
