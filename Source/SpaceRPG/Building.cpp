@@ -12,7 +12,7 @@ ABuilding::ABuilding()
 	SetReplicates(true);
 
 	BuildingMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BuildingMesh"));
-	BuildingMesh->SetupAttachment(RootComponent);
+	RootComponent = BuildingMesh;
 }
 
 // Called when the game starts or when spawned

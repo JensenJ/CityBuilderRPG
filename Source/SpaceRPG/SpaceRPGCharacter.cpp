@@ -43,6 +43,13 @@ ASpaceRPGCharacter::ASpaceRPGCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+	//Create the first person camera
+	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCamera->SetupAttachment(GetMesh(), "head");
+	FirstPersonCamera->bUsePawnControlRotation = true;
+	FirstPersonCamera->SetWorldRotation(FRotator(270.0f, 0.0f, 90.0f));
+	FirstPersonCamera->SetWorldLocation(FVector(0.0f, 15.0f, 0.0f));
+
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
