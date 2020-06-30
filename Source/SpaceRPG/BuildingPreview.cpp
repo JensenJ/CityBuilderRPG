@@ -169,7 +169,7 @@ void ABuildingPreview::SetValidPlacement()
 		//Set Material instance
 		StaticMesh->SetMaterial(i, validMaterial);
 	}
-
+	
 	bIsPlacementValid = true;
 }
 
@@ -299,13 +299,22 @@ void ABuildingPreview::Tick(float DeltaTime)
 //Function to check the validity of the building conditions
 void ABuildingPreview::CheckBuildingConditions()
 {
+	//Check if this building is overlapping / colliding with anything
 	if (!bHasOverlappingActors)
 	{
-		SetValidPlacement();
+		//Only set the materials if they need to be set
+		if (bIsPlacementValid == false)
+		{
+			SetValidPlacement();
+		}
 	}
 	else
 	{
-		SetInvalidPlacement();
+		//Only set the materials if they need to be set
+		if (bIsPlacementValid == true)
+		{
+			SetInvalidPlacement();
+		}
 	}
 }
 
