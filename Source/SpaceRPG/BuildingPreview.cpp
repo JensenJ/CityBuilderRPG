@@ -27,14 +27,6 @@ ABuildingPreview::ABuildingPreview()
 	//Create default materials
 	validMaterial = CreateDefaultSubobject<UMaterial>(TEXT("ValidMaterial"));
 	invalidMaterial = CreateDefaultSubobject<UMaterial>(TEXT("InvalidMaterial"));
-
-	//Try to get the third person character blueprint
-	/*static ConstructorHelpers::FObjectFinder<UBlueprint> ThirdPersonCharacter(TEXT("Blueprint'/Game/Blueprints/Character/ThirdPersonCharacter.ThirdPersonCharacter'"));
-	if (ThirdPersonCharacter.Object != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Found third person character"));
-		owningPlayer = Cast<ASpaceRPGCharacter>(ThirdPersonCharacter.Object);
-	}*/
 }
 
 // Called when the game starts or when spawned
