@@ -49,17 +49,17 @@ private:
 	class ABuilding* hitBuilding;
 
 	//Variables for building mode
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true", ExposeOnSpawn = "true"))
+	bool bIsGridSnappingEnabled = true;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true", ExposeOnSpawn = "true"))
+	bool bIsBuildSnappingEnabled = true;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true"))
 	float buildingRange;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true"))
 	float rotationSnapAngle;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true"))
-	bool bIsGridSnappingEnabled = true;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true"))
-	bool bIsBuildSnappingEnabled = true;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = BuildSettings, meta = (AllowPrivateAccess = "true"));
 	bool bIsPlacementValid = false;
@@ -77,10 +77,10 @@ private:
 
 	//Functions to toggle snapping
 	UFUNCTION(BlueprintCallable)
-	void ToggleGridSnapping();
+	void SetGridSnapping(bool value);
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleBuildSnapping();
+	void SetBuildSnapping(bool value);
 
 	//Functions to rotate the object
 	UFUNCTION(BlueprintCallable)

@@ -111,14 +111,14 @@ void ABuildingPreview::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, c
 }
 
 //Toggle snap mode functions
-void ABuildingPreview::ToggleGridSnapping()
+void ABuildingPreview::SetGridSnapping(bool value)
 {
-	bIsGridSnappingEnabled = !bIsGridSnappingEnabled;
+	bIsGridSnappingEnabled = value;
 }
 
-void ABuildingPreview::ToggleBuildSnapping()
+void ABuildingPreview::SetBuildSnapping(bool value)
 {
-	bIsBuildSnappingEnabled = !bIsBuildSnappingEnabled;
+	bIsBuildSnappingEnabled = value;
 }
 
 //Rotation functions
