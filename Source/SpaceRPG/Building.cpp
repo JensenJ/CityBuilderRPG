@@ -27,7 +27,6 @@ void ABuilding::BeginPlay()
 
 	AActor::GetActorBounds(false, origin, boxExtent, false);
 
-
 	//Multiplying to make bounding box slightly smaller so buildings can be placed directly next to each other without collisions blocking it.
 	boxExtent *= 0.99f;
 
