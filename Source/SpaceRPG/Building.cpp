@@ -46,11 +46,11 @@ void ABuilding::BeginPlay()
 	snapPositions.Insert(FVector(buildingBounds.X * -1.0f, 0, 0), 1);
 	snapPositions.Insert(FVector(0, buildingBounds.Y, 0), 2);
 	snapPositions.Insert(FVector(0, buildingBounds.Y * -1.0f, 0), 3);
-	snapPositions.Insert(FVector(0, 0, buildingBounds.Z), 4);
-	snapPositions.Insert(FVector(0, 0, buildingBounds.Z * -1.0f), 5);
+	//snapPositions.Insert(FVector(0, 0, buildingBounds.Z), 4);
+	//snapPositions.Insert(FVector(0, 0, buildingBounds.Z * -1.0f), 5);
 
-	//Ensure size of snap positions is kept at 6
-	snapPositions.SetNum(6);
+	//Ensure size of snap positions is kept at 4
+	snapPositions.SetNum(4);
 }
 
 // Called every frame
