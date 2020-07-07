@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LayerTotalMask xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PresetVersion="1">
+  <OnClearTrigger />
+  <Masks>
+    <LayerNoiseMask>
+      <MapType>NoiseMask</MapType>
+      <AverageColor>
+        <r>0</r>
+        <g>0</g>
+        <b>0</b>
+        <a>0</a>
+      </AverageColor>
+      <BlendMode>Overlay</BlendMode>
+      <Name>Noise</Name>
+      <Opacity>1</Opacity>
+      <Visible>true</Visible>
+      <RenderInverted>false</RenderInverted>
+      <IsClipping>false</IsClipping>
+      <ControlShow>false</ControlShow>
+      <Amplitude>1.42654228</Amplitude>
+      <Frequency>1.077178</Frequency>
+      <Seed>-49</Seed>
+      <Lacunarity>2.35234022</Lacunarity>
+      <Persistance>0.7137784</Persistance>
+      <Octaves>6</Octaves>
+      <MaskNoiseType>Perlin</MaskNoiseType>
+    </LayerNoiseMask>
+    <LayerPositionGradientMask>
+      <MapType>PositionGradient</MapType>
+      <AverageColor>
+        <r>0</r>
+        <g>0</g>
+        <b>0</b>
+        <a>0</a>
+      </AverageColor>
+      <BlendMode>Normal</BlendMode>
+      <Name>Position Gradient</Name>
+      <Opacity>1</Opacity>
+      <Visible>true</Visible>
+      <RenderInverted>false</RenderInverted>
+      <IsClipping>false</IsClipping>
+      <ControlShow>false</ControlShow>
+      <Angles>
+        <float>-90</float>
+        <float>1</float>
+      </Angles>
+      <RangeFalloff>
+        <float>0.325</float>
+        <float>1</float>
+      </RangeFalloff>
+      <PickUnderlyingDisplacement>true</PickUnderlyingDisplacement>
+      <TweakingStarted>false</TweakingStarted>
+      <Data>Use_Underlying_Displacement</Data>
+    </LayerPositionGradientMask>
+  </Masks>
+  <Enabled>true</Enabled>
+</LayerTotalMask>

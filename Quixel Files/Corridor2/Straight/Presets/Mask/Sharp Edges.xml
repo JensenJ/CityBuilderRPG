@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LayerTotalMask xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PresetVersion="1">
+  <OnClearTrigger />
+  <Masks>
+    <LayerCurvatureMask>
+      <MapType>CurvatureMask</MapType>
+      <AverageColor>
+        <r>0</r>
+        <g>0</g>
+        <b>0</b>
+        <a>0</a>
+      </AverageColor>
+      <BlendMode>Normal</BlendMode>
+      <Name>Sharp Edges</Name>
+      <Opacity>1</Opacity>
+      <Visible>true</Visible>
+      <RenderInverted>false</RenderInverted>
+      <IsClipping>false</IsClipping>
+      <ControlShow>true</ControlShow>
+      <Steps>1</Steps>
+      <Balance>0</Balance>
+      <LevelsMinMax>
+        <float>0.75</float>
+        <float>1</float>
+      </LevelsMinMax>
+      <Data>Use_Underlying_Normals</Data>
+    </LayerCurvatureMask>
+  </Masks>
+  <Enabled>true</Enabled>
+</LayerTotalMask>

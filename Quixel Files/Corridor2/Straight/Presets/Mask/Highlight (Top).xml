@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LayerTotalMask xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PresetVersion="1">
+  <OnClearTrigger />
+  <Masks>
+    <LayerNormalMask>
+      <MapType>NormalMask</MapType>
+      <AverageColor>
+        <r>0</r>
+        <g>0</g>
+        <b>0</b>
+        <a>0</a>
+      </AverageColor>
+      <BlendMode>Normal</BlendMode>
+      <Name>Highlight (Top)</Name>
+      <Opacity>1</Opacity>
+      <Visible>true</Visible>
+      <RenderInverted>false</RenderInverted>
+      <IsClipping>false</IsClipping>
+      <ControlShow>true</ControlShow>
+      <Angles>
+        <float>90</float>
+        <float>1</float>
+      </Angles>
+      <RangeFalloff>
+        <float>0.8</float>
+        <float>1</float>
+      </RangeFalloff>
+      <Data>Use_Underlying_Normals</Data>
+    </LayerNormalMask>
+  </Masks>
+  <Enabled>true</Enabled>
+</LayerTotalMask>

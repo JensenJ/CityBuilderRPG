@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MaterialValues xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PresetVersion="1">
+  <Albedo>
+    <r>0.5372549</r>
+    <g>0.5372549</g>
+    <b>0.5372549</b>
+    <a>1</a>
+  </Albedo>
+  <Metalness>
+    <r>1</r>
+    <g>1</g>
+    <b>1</b>
+    <a>1</a>
+  </Metalness>
+  <Diffuse>
+    <r>0.0115540754</r>
+    <g>0.0115540754</g>
+    <b>0.0115540754</b>
+    <a>1</a>
+  </Diffuse>
+  <Specular>
+    <r>0.5372549</r>
+    <g>0.5372549</g>
+    <b>0.5372549</b>
+    <a>1</a>
+  </Specular>
+  <Gloss>
+    <r>0.828125</r>
+    <g>0.828125</g>
+    <b>0.828125</b>
+    <a>1</a>
+  </Gloss>
+</MaterialValues>
