@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DownloadSettings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PresetVersion="1">
+  <DownloadSettingsMaps PresetVersion="1">
+    <IsAlbedoSelected>true</IsAlbedoSelected>
+    <AlbedoFormatDropdownSelection>0</AlbedoFormatDropdownSelection>
+    <IsDiffuseSelected>true</IsDiffuseSelected>
+    <DiffuseFormatDropdownSelection>0</DiffuseFormatDropdownSelection>
+    <IsCavitySelected>true</IsCavitySelected>
+    <CavityFormatDropdownSelection>0</CavityFormatDropdownSelection>
+    <IsGlossSelected>true</IsGlossSelected>
+    <GlossFormatDropdownSelection>0</GlossFormatDropdownSelection>
+    <IsRoughnessSelected>true</IsRoughnessSelected>
+    <RoughnessFormatDropdownSelection>0</RoughnessFormatDropdownSelection>
+    <NormalFormatDropdownSelection>0</NormalFormatDropdownSelection>
+    <DisplacementFormatDropdownSelection>1</DisplacementFormatDropdownSelection>
+    <IsAOSelected>true</IsAOSelected>
+    <AOFormatDropdownSelection>0</AOFormatDropdownSelection>
+    <IsSpecularSelected>true</IsSpecularSelected>
+    <SpecularFormatDropdownSelection>0</SpecularFormatDropdownSelection>
+    <IsMetalnessSelected>false</IsMetalnessSelected>
+    <MetalnessFormatDropdownSelection>0</MetalnessFormatDropdownSelection>
+    <IsOpacitySelected>true</IsOpacitySelected>
+    <OpacityFormatDropdownSelection>0</OpacityFormatDropdownSelection>
+    <IsBrushSelected>true</IsBrushSelected>
+    <BrushFormatDropdownSelection>0</BrushFormatDropdownSelection>
+    <IsCurvatureSelected>true</IsCurvatureSelected>
+    <CurvatureFormatDropdownSelection>0</CurvatureFormatDropdownSelection>
+    <MaskFormatDropdownSelection>0</MaskFormatDropdownSelection>
+    <IsMaskSelected>true</IsMaskSelected>
+  </DownloadSettingsMaps>
+  <ResolutionDropdownSelection>2</ResolutionDropdownSelection>
+  <MaterialPresetsDropdownSelection>0</MaterialPresetsDropdownSelection>
+  <MeshFormatDropdownSelection>0</MeshFormatDropdownSelection>
+  <Lod0NormalSelected>true</Lod0NormalSelected>
+  <Lod1NormalSelected>true</Lod1NormalSelected>
+  <Lod2NormalSelected>true</Lod2NormalSelected>
+  <Lod3NormalSelected>true</Lod3NormalSelected>
+  <Lod4NormalSelected>true</Lod4NormalSelected>
+  <Lod5NormalSelected>true</Lod5NormalSelected>
+  <IsSourceZToolSelected>false</IsSourceZToolSelected>
+  <IsBrushesSelected>false</IsBrushesSelected>
+  <IsHighPolySourceSelected>false</IsHighPolySourceSelected>
+</DownloadSettings>
